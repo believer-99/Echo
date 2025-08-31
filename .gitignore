@@ -9,6 +9,7 @@ Makefile
 *.o
 *.out
 *.exe
+*.json
 
 # OS junk
 .DS_Store
