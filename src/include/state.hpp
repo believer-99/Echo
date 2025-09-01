@@ -16,10 +16,13 @@ struct Peer
     string username;
     string ip;
     Role role;
+    int tcpPort{0};
 };
+
 // self details
 extern string selfUsername;
-extern string selfRole;
+extern Role selfRole;
+extern int selfTcpPort; // reader's TCP port (0 if writer)
 
 extern unordered_map<string, Peer> peers; // username->peer details
-extern mutex peerRole;                    // can be either R or W only
+extern mutex peerRole;                    // protects peers map
