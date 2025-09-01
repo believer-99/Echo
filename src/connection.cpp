@@ -24,6 +24,7 @@ namespace Connection
 {
     std::unordered_map<std::string, int> peerSockets;
     std::mutex socketsMutex;
+    std::atomic<bool> networkPaused{false};
 }
 void Connection::connectAllReaders()
 {

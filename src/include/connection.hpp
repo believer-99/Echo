@@ -2,6 +2,7 @@
 #include <string>
 #include <unordered_map>
 #include <mutex>
+#include <atomic>
 using namespace std;
 void connectToPeer(const string &peerUsername, int port);
 void startServer(int port);
@@ -25,4 +26,9 @@ namespace Connection
 
     // Connect to all discovered READER peers (no-ops for existing connections)
     void connectAllReaders();
+
+    // Simulated network pause (for testing offline behavior)
+    extern std::atomic<bool> networkPaused;
+    inline void setNetworkPaused(bool v) { networkPaused.store(v); }
+    inline bool isNetworkPaused() { return networkPaused.load(); }
 }

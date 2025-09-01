@@ -44,6 +44,8 @@ static bool send_all(int fd, const void *buf, size_t n)
 }
 static bool send_frame(int fd, uint8_t type, const vector<uint8_t> &payload)
 {
+    if (Connection::isNetworkPaused())
+        return false;
     uint32_t len = htonl((uint32_t)(1 + payload.size()));
     if (!send_all(fd, &len, 4))
         return false;
@@ -110,6 +112,10 @@ void Transfer::announceChange(const string &path, const FileMeta &m)
 // Process an incoming frame on reader side (called from connection's handler)
 void Transfer::processIncomingFrame(int sockfd, uint8_t type, const vector<uint8_t> &payload, MetadataStore &store, const string &basedir)
 {
+    if (Connection::isNetworkPaused())
+    {
+        return; // simulate disconnection: ignore incoming traffic
+    }
     struct RecvState
     {
         uint32_t total_chunks{0};
